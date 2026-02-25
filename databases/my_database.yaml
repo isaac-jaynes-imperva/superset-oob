@@ -1,0 +1,12 @@
+database_name: oob_reports_db_{{ tenant_id }}
+sqlalchemy_uri: postgresql+psycopg2://superset:superset@db:5432/superset
+uuid: a2dc77af-e654-49bb-b321-40f6b559a1f0
+version: 1.0.0
+cache_timeout: null
+expose_in_sqllab: true
+allow_run_async: false
+allow_ctas: false
+allow_cvas: false
+extra: {}
+password: null
+allow_csv_upload: false

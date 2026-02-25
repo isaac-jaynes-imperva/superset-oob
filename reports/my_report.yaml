@@ -1,0 +1,11 @@
+type: Report
+name: My Weekly Report {{ tenant_id }}
+description: A weekly email of the 'My Dashboard' dashboard.
+crontab: 0 9 * * 1  # Every Monday at 9am
+active: true
+recipients:
+  - type: Email
+    recipient_config_json:
+      target: test@example.com
+report_format: PNG
+uuid: 123e4567-e89b-12d3-a456-426614175323
