@@ -1,0 +1,18 @@
+database_name: Test Database {{ tenant_id }}
+sqlalchemy_uri: drill+sadrill://host.docker.internal:8047/mongo?use_ssl=False
+cache_timeout: null
+expose_in_sqllab: true
+allow_run_async: false
+allow_ctas: false
+allow_cvas: false
+allow_dml: false
+allow_csv_upload: false
+extra:
+  metadata_params: {}
+  engine_params: {}
+  metadata_cache_timeout: {}
+  schemas_allowed_for_csv_upload: []
+impersonate_user: false
+configuration_method: sqlalchemy_form
+uuid: 788ef16a-20b6-4871-a69f-852bc2bf659b
+version: 1.0.0

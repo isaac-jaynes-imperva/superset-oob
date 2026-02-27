@@ -1,51 +1,104 @@
-# Out-of-the-Box (OOB) Reports
+# Superset OOB Reports Service
 
-This serves as an example for how to structure the repository for Superset's "Out-of-the-Box" (OOB) reports import feature. This feature allows you to import reports, dashboards, charts, and datasets from a Git repository into your Superset instance.
+This service provides a mechanism for importing "Out-of-the-Box" (OOB) report bundles into a running Superset instance.
 
-## Repository Structure
+## Report Bundle Structure
 
-The repository must be structured with the following directories. Each directory holds YAML files corresponding to a specific Superset asset type.
+Each subdirectory within the `/resources` directory is treated as a self-contained report bundle. The service processes and imports each bundle individually. The directory structure inside a bundle must conform to the format expected by Superset's import functionality.
+
+A typical bundle layout looks like this:
 
 ```
-.
-├── databases/
-├── datasets/
-├── charts/
-├── dashboards/
-└── reports/
+resources/
+└── oob_report_example/
+    ├── metadata.yaml
+    ├── charts/
+    │   └── test_chart.yaml
+    ├── dashboards/
+    │   └── test_dashboard.yaml
+    ├── databases/
+    │   └── test_database.yaml
+    ├── datasets/
+    │   └── examples/
+    │       └── test_dataset.yaml
+    └── reports/
+        └── test_report.yaml
 ```
 
--   `databases/`: Holds YAML definitions for databases.
--   `datasets/`: Holds YAML definitions for datasets.
--   `charts/`: Holds YAML definitions for charts.
--   `dashboards/`: Holds YAML definitions for dashboards.
--   `reports/`: Holds YAML definitions for reports (email schedules).
+- **`metadata.yaml`**: Contains metadata about the exported assets.
+- **`charts/`, `dashboards/`, `databases/`, `datasets/`, `reports/`**: These directories contain the YAML definitions for each asset type. The directory structure, including any subdirectories like `datasets/examples/`, is preserved in the final import package.
 
-## Asset Format
+## How It Works
 
-All asset files must be in YAML format (`.yaml` or `.yml`). You can generate these files by exporting assets from the Superset UI.
+The import process is triggered by a POST request to the `/import` endpoint. For each report bundle found in the `resources/` directory, the service performs the following steps:
 
-For example, to export a dashboard, navigate to the dashboard list, select the dashboards you want to export, and choose **"Export dashboard(s) to YAML"** from the **Actions** menu. The exported YAML files should then be placed in the corresponding directories in your repository.
+1.  **UUID Management**: The service scans all `.yaml` files within the bundle to build a map of all existing UUIDs. It then generates a new, unique UUID for each old one. This ensures that re-importing a bundle creates new assets rather than overwriting existing ones.
 
-## Templating
+2.  **Templating**: The service replaces all occurrences of the placeholder `{{ tenant_id }}` in the `.yaml` files with the `tenant_id` value provided in the API request.
 
-The import command supports basic templating using the `{{ tenant_id }}` placeholder. You can use this placeholder in your YAML files to create assets that are specific to a tenant. This is particularly useful for multi-tenant deployments where assets might point to tenant-specific tables or schemas.
+3.  **Packaging**: The service creates a `.zip` archive containing all the files and folders from the bundle directory. The content of the YAML files includes the replaced UUIDs and `tenant_id`. This zip file is stored in memory.
 
-For example, you can use the `{{ tenant_id }}` placeholder in a dataset's `table_name`:
+4.  **Importing**: The final `.zip` file is sent in a single request to the `/api/v1/report/import/` Superset API endpoint, which handles the import of all assets in the bundle.
 
-```yaml
-table_name: my_table_{{ tenant_id }}
-schema: my_schema_{{ tenant_id }}
+## Running the service
+
+This service is designed to be run as a Docker container.
+
+### Prerequisites
+
+*   Docker
+*   A running Superset instance accessible from this service.
+
+### Building the image
+
+To build the Docker image, run the following command from the project root directory:
+
+```bash
+docker build -t superset-oob-reports .
 ```
 
-When you run the import command with a `tenant_id` of `my_tenant`, the `table_name` will be set to `my_table_my_tenant` and the `schema` to `my_schema_my_tenant`.
+### Creating the shared network
+
+To ensure the `superset-oob` service and the Superset service can communicate via Docker networking, you can create a shared network:
+
+```bash
+docker network create superset_oob_network
+```
+*(Ensure your Superset container also joins this network.)*
+
+### Running the container
+
+To run the container, you can use the provided `docker-compose.yml` file:
+
+```bash
+docker-compose up --build
+```
+
+This will start the `oob-reports` service on port 8082. The service will attempt to connect to Superset at the address defined by the `SUPERSET_HOST` environment variable.
+
+### Configuration
+
+The service can be configured using the following environment variables:
+
+*   `SUPERSET_HOST`: The URL of the Superset instance (default: `http://host.docker.internal:8088`)
+*   `SUPERSET_USERNAME`: The username to use for authentication (default: `admin`)
+*   `SUPERSET_PASSWORD`: The password to use for authentication (default: `admin`)
 
 ## Usage
 
-Once your repository is structured correctly and contains your YAML assets, you can import them into Superset using the `superset import-oob-reports` CLI command.
+To trigger the import of all OOB report bundles, send a POST request to the `/import` endpoint with a `tenant_id`:
 
 ```bash
-superset import-oob-reports -t my_tenant -u https://my-repo.com/reports.git -b main
+curl -X POST -H "Content-Type: application/json" -d '{
+    "tenant_id": "my_tenant"
+}' http://localhost:8082/import
 ```
 
-This command will clone the specified repository, apply the `tenant_id` templating, and import all the assets into your Superset instance.
+This single command will trigger the full import process described above for all bundles located in the `resources` directory.
+
+Inside of the superset container
+
+```bash
+superset oob-cli oob-import --tenant-id my_tenant
+```
+

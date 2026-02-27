@@ -1,8 +1,11 @@
 type: Report
-name: My Weekly Report {{ tenant_id }}
+name: Test Report {{ tenant_id }}
 description: A weekly email of the 'My Dashboard' dashboard.
-crontab: 0 9 * * 1  # Every Monday at 9am
+crontab: 0 9 * * 1
 active: true
+dashboard: c7bc10f4-6a2d-7569-caae-bbc91864ee12
+creation_method: alerts_reports
+owners: []
 recipients:
   - type: Email
     recipient_config_json:

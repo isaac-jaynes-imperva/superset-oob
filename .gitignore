@@ -1,0 +1,3 @@
+# Ignore temp directory for resource zips
+**/.DS_Store
+**/__pycache__

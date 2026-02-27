@@ -1,4 +1,4 @@
-dashboard_title: My Dashboard {{ tenant_id }}
+dashboard_title: Test Dashboard {{ tenant_id }}
 description: null
 css: ''
 slug: null
@@ -10,8 +10,8 @@ position:
     meta:
       chartId: 131
       height: 80
-      sliceName: My Chart
-      uuid: 0499bdec-0837-44f3-ae8a-8c670de81afe
+      sliceName: Test Chart {{ tenant_id }}
+      uuid: 0c953c84-0c9a-418d-be9f-2894d2a2cee0
       width: 3
     parents:
     - ROOT_ID
@@ -29,7 +29,7 @@ position:
   HEADER_ID:
     id: HEADER_ID
     meta:
-      text: My Dashboard {{ tenant_id }}
+      text: Test Dashboard {{ tenant_id }}
     type: HEADER
   ROOT_ID:
     children:

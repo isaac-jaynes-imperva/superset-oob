@@ -1,0 +1,20 @@
+networks:
+  superset_oob_network:
+    external: true
+
+services:
+  oob-reports:
+    build: .
+    image: superset-oob-reports
+    ports:
+      - "8082:8082"
+    environment:
+      - SUPERSET_HOST=http://superset:8088
+      - SUPERSET_USERNAME=admin
+      - SUPERSET_PASSWORD=admin
+    networks:
+      - superset_oob_network
+    volumes:
+      - ./src:/app/src
+      - ./.tmp:/app/.tmp
+      - ./resources:/app/resources:ro
