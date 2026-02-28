@@ -3,6 +3,8 @@ kind: Service
 metadata:
   namespace: sky
   name: sueprset-oob-service
+  labels:
+    io.kompose.service: superset
 spec:
   selector:
     io.kompose.service: superset
