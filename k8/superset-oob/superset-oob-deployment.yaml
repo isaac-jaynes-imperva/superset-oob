@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: superset-oob
+  labels:
+    app: superset-oob
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: superset-oob
+  template:
+    metadata:
+      labels:
+        app: superset-oob
+    spec:
+      containers:
+      - name: superset-oob
+        image: superset-oob # Make sure this image is available in your container registry
+        ports:
+        - containerPort: 8082
+        env:
+        # For production, it's recommended to use Kubernetes Secrets or ConfigMaps
+        # to manage environment variables.
+        - name: SUPERSET_HOST
+          value: "http://superset:8088"
+        - name: SUPERSET_USERNAME
+          value: "admin"
+        - name: SUPERSET_PASSWORD
+          value: "admin"
+        # Note: The local volumes from docker-compose.yml have been omitted.
+        # In Kubernetes, you would typically build the application code into the docker image.
+        # For persistent data, you should use PersistentVolumes and PersistentVolumeClaims.
