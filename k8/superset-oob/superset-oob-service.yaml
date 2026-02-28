@@ -5,7 +5,7 @@ metadata:
   name: sueprset-oob-service
 spec:
   selector:
-    app: superset-oob
+    io.kompose.service: superset
   ports:
     - protocol: TCP
       port: 8082

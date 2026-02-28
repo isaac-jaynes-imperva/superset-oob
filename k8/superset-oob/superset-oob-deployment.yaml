@@ -4,16 +4,16 @@ metadata:
   namespace: sky
   name: superset-oob
   labels:
-    app: superset-oob
+    io.kompose.service: superset
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: superset-oob
+      io.kompose.service: superset
   template:
     metadata:
       labels:
-        app: superset-oob
+        io.kompose.service: superset
     spec:
       containers:
       - name: superset-oob
