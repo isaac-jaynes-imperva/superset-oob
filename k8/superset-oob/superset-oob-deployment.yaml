@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: superset-oob
-        image: superset-oob # Make sure this image is available in your container registry
+        image: us-central1-docker.pkg.dev/cpl-dspm-l-sandbox-02/sky-dev-joey-andres/superset-oob
         ports:
         - containerPort: 8082
         env:
