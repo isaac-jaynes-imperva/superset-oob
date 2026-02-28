@@ -35,7 +35,7 @@ REPO="us-central1-docker.pkg.dev/cpl-dspm-l-sandbox-02/sky-dev-joey-andres"
 for i in "${arr[@]}"
 do
     FINAL_IMAGE="${REPO}/${i}:${VERSION}"
-    #docker tag superset-$i $i # Only relevant if image is from docker-compose build
+    docker tag superset-$i $i # Only relevant if image is from docker-compose build
     docker tag $i $FINAL_IMAGE
     docker push $FINAL_IMAGE
 done
