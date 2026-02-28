@@ -30,10 +30,7 @@ def import_reports():
     Import OOB reports from a git repository.
     """
     data = request.get_json()
-    tenant_id = data.get("tenant_id")
-
-    if not tenant_id:
-        return jsonify({"error": "tenant_id is required"}), 400
+    tenant_id = data.get("tenant_id", None)
 
     try:
         import_oob_reports(
@@ -45,4 +42,6 @@ def import_reports():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
+    print("Perfomring initial provisioning of out-of-the box superset items...")
+    import_oob_reports()
     app.run(host="0.0.0.0", port=8082, debug=True)
