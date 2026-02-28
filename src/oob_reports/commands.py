@@ -15,7 +15,7 @@
 # specific language governing permissions and limitations
 # under the License.
 import logging
-import ossaudiodev
+import os
 import zipfile
 import uuid
 import io
