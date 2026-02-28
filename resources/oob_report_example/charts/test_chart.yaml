@@ -36,5 +36,7 @@ query_context: null
 cache_timeout: null
 uuid: 0c953c84-0c9a-418d-be9f-2894d2a2cee0
 version: 1.0.0
-dataset_uuid: 974b7a1c-22ea-49cb-9214-97b7dbd511e0
+dataset_name: test_dataset_{{ tenant_id }}
+database_name: Test Database {{ tenant_id }}
+datasource_type: table
 tags: []

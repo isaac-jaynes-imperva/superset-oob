@@ -1,4 +1,4 @@
-table_name: test_dataset
+table_name: test_dataset_{{ tenant_id }}
 main_dttm_col: null
 description: null
 default_endpoint: null
@@ -225,3 +225,4 @@ columns:
   extra: null
 version: 1.0.0
 database_uuid: a2dc77af-e654-49bb-b321-40f6b559a1ee
+database_name: Test Database {{ tenant_id }}

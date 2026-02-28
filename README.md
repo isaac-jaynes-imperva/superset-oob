@@ -19,8 +19,7 @@ resources/
     ├── databases/
     │   └── test_database.yaml
     ├── datasets/
-    │   └── examples/
-    │       └── test_dataset.yaml
+    │   └── test_dataset.yaml
     └── reports/
         └── test_report.yaml
 ```
