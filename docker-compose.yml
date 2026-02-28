@@ -5,15 +5,15 @@ networks:
 services:
   oob-reports:
     build: .
-    image: superset-oob-reports
+    image: superset-oob
     ports:
       - "8082:8082"
     environment:
       - SUPERSET_HOST=http://superset:8088
       - SUPERSET_USERNAME=admin
       - SUPERSET_PASSWORD=admin
-    networks:
-      - superset_oob_network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       - ./src:/app/src
       - ./.tmp:/app/.tmp
