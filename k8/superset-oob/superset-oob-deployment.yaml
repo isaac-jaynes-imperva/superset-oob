@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: superset-oob
-        image: us-central1-docker.pkg.dev/cpl-dspm-l-sandbox-02/sky-dev-joey-andres/superset-oob:0.0.1-alpha.4
+        image: us-central1-docker.pkg.dev/cpl-dspm-l-sandbox-02/sky-dev-joey-andres/superset-oob:latest
         ports:
         - containerPort: 8082
         env:
