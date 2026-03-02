@@ -15,5 +15,5 @@
 # specific language governing permissions and limitations
 # under the License.
 """
-This package contains the logic for the OOB reports service.
+This package contains the logic for the OOB assets service.
 """

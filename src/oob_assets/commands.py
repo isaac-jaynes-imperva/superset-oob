@@ -23,16 +23,16 @@ from pathlib import Path
 
 import yaml
 
-from oob_reports.client import SupersetClient
+from oob_assets.client import SupersetClient
 
 logger = logging.getLogger(__name__)
 
 
-def import_oob_reports(
+def import_oob_assets(
     tenant_id: str
 ) -> None:
     """
-    Imports OOB reports from a git repository or a local directory.
+    Imports OOB assets from a git repository or a local directory.
     """
 
     superset_host = os.environ.get("SUPERSET_HOST", "http://superset:8088")
@@ -91,9 +91,9 @@ def import_oob_reports(
                         for old, new in uuid_map.items():
                             content = content.replace(old, new)
                         
-                        zipf.writestr(str(rel_path), content.encode('utf-8'))
+                        zipf.writestr(str(Path(bundle_name) / rel_path), content.encode('utf-8'))
                     else:
-                        zipf.write(abs_path, arcname=str(rel_path))
+                        zipf.write(abs_path, arcname=str(Path(bundle_name) / rel_path))
         
         # Get the zip data from the buffer
         zip_data = zip_buffer.getvalue()
@@ -107,4 +107,4 @@ def import_oob_reports(
         # logger.info("Saved debug zip file to: %s", debug_zip_path)
         
         # Call the single import endpoint for the whole bundle
-        client.import_report(f"{bundle_name}.zip", zip_data)
+        client.import_asset(f"{bundle_name}.zip", zip_data)

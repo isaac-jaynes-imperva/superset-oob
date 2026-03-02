@@ -17,7 +17,7 @@
 
 import logging
 from flask import Flask, jsonify, request # pylint: disable=E0401
-from src.oob_reports.commands import import_oob_reports # pylint: disable=E0401
+from src.oob_assets.commands import import_oob_assets # pylint: disable=E0401
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -25,9 +25,9 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 
 @app.route("/import", methods=["POST"])
-def import_reports():
+def import_assets():
     """
-    Import OOB reports from a git repository.
+    Import OOB assets.
     """
     data = request.get_json()
     tenant_id = data.get("tenant_id")
@@ -36,12 +36,12 @@ def import_reports():
         return jsonify({"error": "tenant_id is required"}), 400
 
     try:
-        import_oob_reports(
+        import_oob_assets(
             tenant_id=tenant_id
         )
         return jsonify({"message": "Import started"}), 202
     except Exception as e:
-        logger.exception("Failed to import OOB reports")
+        logger.exception("Failed to import OOB assets")
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":

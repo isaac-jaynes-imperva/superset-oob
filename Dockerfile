@@ -26,4 +26,4 @@ COPY src/ /app/src/
 
 ENV PYTHONPATH=/app/src
 
-CMD ["python", "-m", "oob_reports.api"]
+CMD ["python", "-m", "oob_assets.api"]

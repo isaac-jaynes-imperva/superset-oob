@@ -1,10 +1,10 @@
-# Superset OOB Reports Service
+# Superset OOB Assets Service
 
-This service provides a mechanism for importing "Out-of-the-Box" (OOB) report bundles into a running Superset instance.
+This service provides a mechanism for importing "Out-of-the-Box" (OOB) asset bundles into a running Superset instance.
 
-## Report Bundle Structure
+## Asset Bundle Structure
 
-Each subdirectory within the `/resources` directory is treated as a self-contained report bundle. The service processes and imports each bundle individually. The directory structure inside a bundle must conform to the format expected by Superset's import functionality.
+Each subdirectory within the `/resources` directory is treated as a self-contained asset bundle. The service processes and imports each bundle individually. The directory structure inside a bundle must conform to the format expected by Superset's import functionality.
 
 A typical bundle layout looks like this:
 
@@ -29,7 +29,7 @@ resources/
 
 ## How It Works
 
-The import process is triggered by a POST request to the `/import` endpoint. For each report bundle found in the `resources/` directory, the service performs the following steps:
+The import process is triggered by a POST request to the `/import` endpoint. For each asset bundle found in the `resources/` directory, the service performs the following steps:
 
 1.  **UUID Management**: The service scans all `.yaml` files within the bundle to build a map of all existing UUIDs. It then generates a new, unique UUID for each old one. This ensures that re-importing a bundle creates new assets rather than overwriting existing ones.
 
@@ -37,7 +37,7 @@ The import process is triggered by a POST request to the `/import` endpoint. For
 
 3.  **Packaging**: The service creates a `.zip` archive containing all the files and folders from the bundle directory. The content of the YAML files includes the replaced UUIDs and `tenant_id`. This zip file is stored in memory.
 
-4.  **Importing**: The final `.zip` file is sent in a single request to the `/api/v1/report/import/` Superset API endpoint, which handles the import of all assets in the bundle.
+4.  **Importing**: The final `.zip` file is sent in a single request to the `/api/v1/assets/import/` Superset API endpoint, which handles the import of all assets in the bundle.
 
 ## Running the service
 
@@ -53,7 +53,7 @@ This service is designed to be run as a Docker container.
 To build the Docker image, run the following command from the project root directory:
 
 ```bash
-docker build -t superset-oob-reports .
+docker build -t superset-oob-assets .
 ```
 
 ### Creating the shared network
@@ -73,7 +73,7 @@ To run the container, you can use the provided `docker-compose.yml` file:
 docker-compose up --build
 ```
 
-This will start the `oob-reports` service on port 8082. The service will attempt to connect to Superset at the address defined by the `SUPERSET_HOST` environment variable.
+This will start the `oob-assets` service on port 8082. The service will attempt to connect to Superset at the address defined by the `SUPERSET_HOST` environment variable.
 
 ### Configuration
 
@@ -85,7 +85,7 @@ The service can be configured using the following environment variables:
 
 ## Usage
 
-To trigger the import of all OOB report bundles, send a POST request to the `/import` endpoint with a `tenant_id`:
+To trigger the import of all OOB asset bundles, send a POST request to the `/import` endpoint with a `tenant_id`:
 
 ```bash
 curl -X POST -H "Content-Type: application/json" -d '{

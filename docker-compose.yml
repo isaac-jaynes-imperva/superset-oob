@@ -3,9 +3,9 @@ networks:
     external: true
 
 services:
-  oob-reports:
+  oob-assets:
     build: .
-    image: superset-oob-reports
+    image: superset-oob-assetss
     ports:
       - "8082:8082"
     environment:

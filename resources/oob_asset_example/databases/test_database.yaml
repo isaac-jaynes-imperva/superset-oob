@@ -1,5 +1,5 @@
 database_name: Test Database {{ tenant_id }}
-sqlalchemy_uri: drill+sadrill://host.docker.internal:8047/mongo?use_ssl=False
+sqlalchemy_uri: postgresql://examples:examples@db:5432/examples
 cache_timeout: null
 expose_in_sqllab: true
 allow_run_async: false
@@ -14,5 +14,5 @@ extra:
   schemas_allowed_for_csv_upload: []
 impersonate_user: false
 configuration_method: sqlalchemy_form
-uuid: 788ef16a-20b6-4871-a69f-852bc2bf659b
+uuid: a2dc77af-e654-49bb-b321-40f6b559a1ee
 version: 1.0.0

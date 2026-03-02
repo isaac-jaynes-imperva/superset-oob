@@ -50,17 +50,16 @@ class SupersetClient:
 
 
 
-    def import_report(self, bundle_name: str, bundle_data: bytes) -> None:
+    def import_asset(self, bundle_name: str, bundle_data: bytes) -> None:
         """
-        Import a full report bundle from in-memory data.
+        Import a full asset bundle from in-memory data.
         """
-        logger.info("Importing report bundle for: %s", bundle_name)
-        files = {'formData': (bundle_name, bundle_data, 'application/zip')}
-        data = {'overwrite': 'true'}
-        resp = self.session.post(f"{self.host}/api/v1/report/import/", files=files, data=data)
+        logger.info("Importing asset bundle for: %s", bundle_name)
+        files = {'bundle': (bundle_name, bundle_data, 'application/zip')}
+        resp = self.session.post(f"{self.host}/api/v1/assets/import/", files=files)
         try:
             resp.raise_for_status()
-            logger.info("Successfully imported report bundle for %s", bundle_name)
+            logger.info("Successfully imported asset bundle for %s", bundle_name)
         except requests.exceptions.HTTPError as e:
-            logger.error("Error importing report bundle: %s", e.response.text)
+            logger.error("Error importing asset bundle: %s", e.response.text)
             raise e

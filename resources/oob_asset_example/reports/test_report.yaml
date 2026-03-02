@@ -1,14 +1,13 @@
 type: Report
 name: Test Report {{ tenant_id }}
 description: A weekly email of the 'My Dashboard' dashboard.
-crontab: 0 9 * * 1
 active: true
-dashboard_id: c7bc10f4-6a2d-7569-caae-bbc91864ee12
+crontab: 0 9 * * 1
 creation_method: alerts_reports
-owners: []
+timezone: 'UTC'
+dashboard_uuid: 3f429ae9-3cc5-416a-bd71-7a1465a90aa6
+report_format: PNG
 recipients:
   - type: Email
     recipient_config_json:
       target: test@example.com
-report_format: PNG
-uuid: 123e4567-e89b-12d3-a456-426614175323
