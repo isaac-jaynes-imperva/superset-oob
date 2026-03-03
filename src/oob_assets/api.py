@@ -30,10 +30,7 @@ def import_assets():
     Import OOB assets.
     """
     data = request.get_json()
-    tenant_id = data.get("tenant_id")
-
-    if not tenant_id:
-        return jsonify({"error": "tenant_id is required"}), 400
+    tenant_id = data.get("tenant_id", None)
 
     try:
         import_oob_assets(
@@ -45,4 +42,6 @@ def import_assets():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
+    print("Performing initial provisioning of out-of-the box superset assets...")
+    import_oob_assets()
     app.run(host="0.0.0.0", port=8082, debug=True)

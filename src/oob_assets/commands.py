@@ -16,6 +16,7 @@
 # under the License.
 import logging
 import os
+from typing import Optional
 import zipfile
 import uuid
 import io
@@ -29,7 +30,7 @@ logger = logging.getLogger(__name__)
 
 
 def import_oob_assets(
-    tenant_id: str
+    tenant_id: Optional[str] = None
 ) -> None:
     """
     Imports OOB assets from a git repository or a local directory.
@@ -85,7 +86,8 @@ def import_oob_assets(
                             content = f.read()
                         
                         # Replace tenant_id
-                        content = content.replace('{{ tenant_id }}', tenant_id)
+                        if tenant_id:
+                            content = content.replace('{{ tenant_id }}', tenant_id)
 
                         # Replace UUIDs
                         for old, new in uuid_map.items():

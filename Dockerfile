@@ -23,6 +23,7 @@ COPY pyproject.toml .
 RUN pip install --no-cache-dir .
 
 COPY src/ /app/src/
+COPY resources/ /app/resources
 
 ENV PYTHONPATH=/app/src
 
