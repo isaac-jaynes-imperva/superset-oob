@@ -2,9 +2,13 @@
 
 This service provides a mechanism for importing "Out-of-the-Box" (OOB) asset bundles into a running Superset instance.
 
+## Exporting Superset Assets
+
+Assets can be exported from Superset in a variety of locations. In the Dashboard list, there is an `export` action button, which will download a zip folder containing the dashboard and all associated assets, such as charts, datasets, and databases. This can be unzipped and added to a folder in the `/resources` directory of the `superset-oob` repo. This can similarly be done for Charts, Datasets, and Databases.!
+
 ## Asset Bundle Structure
 
-Each subdirectory within the `/resources` directory is treated as a self-contained asset bundle. The service processes and imports each bundle individually. The directory structure inside a bundle must conform to the format expected by Superset's import functionality.
+Each subdirectory within the `/resources` directory is treated as a self-contained asset bundle. The service processes and imports each bundle individually. The directory structure inside a bundle must conform to the format expected by Superset's import functionality. In order to import correctly, all supporting assets will need to be in the folder. Not all asset types need to be present, you can for example only insert databases and datasets with no charts or dashboards.
 
 A typical bundle layout looks like this:
 

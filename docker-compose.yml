@@ -5,7 +5,7 @@ networks:
 services:
   oob-assets:
     build: .
-    image: superset-oob-assetss
+    image: superset-oob
     ports:
       - "8082:8082"
     environment:
