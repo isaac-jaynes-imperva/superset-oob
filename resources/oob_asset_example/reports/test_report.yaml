@@ -11,3 +11,4 @@ recipients:
   - type: Email
     recipient_config_json:
       target: test@example.com
+template: true

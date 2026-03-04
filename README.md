@@ -4,7 +4,8 @@ This service provides a mechanism for importing "Out-of-the-Box" (OOB) asset bun
 
 ## Exporting Superset Assets
 
-Assets can be exported from Superset in a variety of locations. In the Dashboard list, there is an `export` action button, which will download a zip folder containing the dashboard and all associated assets, such as charts, datasets, and databases. This can be unzipped and added to a folder in the `/resources` directory of the `superset-oob` repo. This can similarly be done for Charts, Datasets, and Databases.!
+Assets can be exported from Superset in a variety of locations. In the Dashboard list, there is an `export` action button, which will download a zip folder containing the dashboard and all associated assets, such as charts, datasets, and databases. This can be unzipped and added to a folder in the `/resources` directory of the `superset-oob` repo. This can similarly be done for Charts, Datasets, and Databases. Finally, `{{ tenant_id }}` can be added anywhere in the yaml files that need to have the tenant_id replaced. Add `template: true` to the yaml file if you would like `{{ tenant_id }}` NOT to be replaced, and wish to have the unaltered file uploaded to Superset. This is for Superset-side tenant provisioning.
+
 
 ## Asset Bundle Structure
 

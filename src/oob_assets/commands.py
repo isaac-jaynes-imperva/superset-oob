@@ -84,9 +84,12 @@ def import_oob_assets(
                     if file.endswith((".yaml", ".yml")):
                         with open(abs_path, 'r', encoding='utf-8') as f:
                             content = f.read()
+
+                        content_yaml = yaml.safe_load(content)
+                        template = content_yaml.get('template', False) if isinstance(content_yaml, dict) else False
                         
-                        # Replace tenant_id
-                        if tenant_id:
+                        # Replace tenant_id if it's not a template
+                        if tenant_id and not template:
                             content = content.replace('{{ tenant_id }}', tenant_id)
 
                         # Replace UUIDs

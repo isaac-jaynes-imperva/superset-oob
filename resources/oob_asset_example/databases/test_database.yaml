@@ -16,3 +16,4 @@ impersonate_user: false
 configuration_method: sqlalchemy_form
 uuid: a2dc77af-e654-49bb-b321-40f6b559a1ee
 version: 1.0.0
+template: true
