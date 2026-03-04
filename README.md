@@ -61,15 +61,6 @@ To build the Docker image, run the following command from the project root direc
 docker build -t superset-oob-assets .
 ```
 
-### Creating the shared network
-
-To ensure the `superset-oob` service and the Superset service can communicate via Docker networking, you can create a shared network:
-
-```bash
-docker network create superset_oob_network
-```
-*(Ensure your Superset container also joins this network.)*
-
 ### Running the container
 
 To run the container, you can use the provided `docker-compose.yml` file:
@@ -99,10 +90,4 @@ curl -X POST -H "Content-Type: application/json" -d '{
 ```
 
 This single command will trigger the full import process described above for all bundles located in the `resources` directory.
-
-Inside of the superset container
-
-```bash
-superset oob-cli oob-import --tenant-id my_tenant
-```
 
