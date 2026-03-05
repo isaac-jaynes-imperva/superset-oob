@@ -79,6 +79,46 @@ The service can be configured using the following environment variables:
 *   `SUPERSET_USERNAME`: The username to use for authentication (default: `admin`)
 *   `SUPERSET_PASSWORD`: The password to use for authentication (default: `admin`)
 
+## Handling Secrets
+
+To connect to certain databases, you may need to provide secrets like passwords or private keys. To handle these securely without checking them into the git repository, the import script can be configured with environment variables.
+
+The script looks for environment variables with names based on the asset bundle's directory name. For a bundle located in a directory named `my_bundle`, the script will look for the following environment variables:
+
+-   `MY_BUNDLE_PASSWORD`: For the database password.
+-   `MY_BUNDLE_SSH_TUNNEL_PASSWORD`: For the SSH tunnel password.
+-   `MY_BUNDLE_SSH_TUNNEL_PRIVATE_KEY_PASSWORD`: For the SSH tunnel's private key password.
+-   `MY_BUNDLE_SSH_TUNNEL_PRIVATE_KEY`: For the SSH tunnel's private key.
+
+### Formatting Secret Values
+
+The value of these environment variables should be the raw secret content.
+
+-   For a simple password, the value is the password itself.
+-   For secrets that are JSON key files (like for Google BigQuery), the value should be the full content of the JSON file.
+
+### Example
+
+To provide a database password for a bundle named `oob_asset_secret`, you would set an environment variable like this before running the service:
+
+```bash
+export OOB_ASSET_SECRET_PASSWORD='your_database_password_here'
+```
+
+If your secret is a multi-line private key, you can set it like this:
+
+```bash
+export OOB_ASSET_SECRET_SSH_TUNNEL_PRIVATE_KEY='-----BEGIN RSA PRIVATE KEY-----
+...
+-----END RSA PRIVATE KEY-----'
+```
+
+Or for a JSON key file:
+
+```bash
+export OOB_ASSET_SECRET_PASSWORD='{"type": "service_account", "project_id": "...", ...}'
+```
+
 ## Usage
 
 To trigger the import of all OOB asset bundles, send a POST request to the `/import` endpoint with a `tenant_id`:

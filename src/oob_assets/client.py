@@ -14,8 +14,10 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
-
+import json
 import logging
+from typing import Dict, Optional
+
 import requests
 
 logger = logging.getLogger(__name__)
@@ -50,12 +52,34 @@ class SupersetClient:
 
 
 
-    def import_asset(self, bundle_name: str, bundle_data: bytes) -> None:
+    def import_asset(
+        self,
+        bundle_name: str,
+        bundle_data: bytes,
+        passwords: Optional[Dict[str, str]] = None,
+        ssh_tunnel_passwords: Optional[Dict[str, str]] = None,
+        ssh_tunnel_private_key_passwords: Optional[Dict[str, str]] = None,
+        ssh_tunnel_private_keys: Optional[Dict[str, str]] = None,
+    ) -> None:
         """
         Import a full asset bundle from in-memory data.
         """
         logger.info("Importing asset bundle for: %s", bundle_name)
-        files = {'bundle': (bundle_name, bundle_data, 'application/zip')}
+        files = {"bundle": (bundle_name, bundle_data, "application/zip")}
+        if passwords:
+            files["passwords"] = (None, json.dumps(passwords))
+        if ssh_tunnel_passwords:
+            files["ssh_tunnel_passwords"] = (None, json.dumps(ssh_tunnel_passwords))
+        if ssh_tunnel_private_key_passwords:
+            files["ssh_tunnel_private_key_passwords"] = (
+                None,
+                json.dumps(ssh_tunnel_private_key_passwords),
+            )
+        if ssh_tunnel_private_keys:
+            files["ssh_tunnel_private_keys"] = (
+                None,
+                json.dumps(ssh_tunnel_private_keys),
+            )
         resp = self.session.post(f"{self.host}/api/v1/assets/import/", files=files)
         try:
             resp.raise_for_status()

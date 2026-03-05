@@ -50,6 +50,30 @@ def import_oob_assets(
         if not bundle_path.is_dir():
             continue
 
+        database_file = None
+        db_dir = bundle_path / "databases"
+        if db_dir.is_dir():
+            for file in os.listdir(db_dir):
+                if file.endswith((".yaml", ".yml")):
+                    database_file = f"databases/{file}"
+                    break
+        
+        secrets = {}
+        secret_types = {
+            "passwords": "PASSWORD",
+            "ssh_tunnel_passwords": "SSH_TUNNEL_PASSWORD",
+            "ssh_tunnel_private_key_passwords": "SSH_TUNNEL_PRIVATE_KEY_PASSWORD",
+            "ssh_tunnel_private_keys": "SSH_TUNNEL_PRIVATE_KEY",
+        }
+
+        if database_file:
+            for secret_key, env_var_suffix in secret_types.items():
+                env_var_name = f"{bundle_name.upper()}_{env_var_suffix}"
+                secret_content = os.environ.get(env_var_name)
+                if secret_content:
+                    logger.info("Found %s for %s in environment variable", secret_key, bundle_name)
+                    secrets[secret_key] = {database_file: secret_content}
+
         uuid_map = {}
         all_yaml_files = []
         for root, _, files in os.walk(bundle_path):
@@ -112,4 +136,4 @@ def import_oob_assets(
         # logger.info("Saved debug zip file to: %s", debug_zip_path)
         
         # Call the single import endpoint for the whole bundle
-        client.import_asset(f"{bundle_name}.zip", zip_data)
+        client.import_asset(f"{bundle_name}.zip", zip_data, **secrets)
